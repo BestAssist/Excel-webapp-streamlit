@@ -11,6 +11,7 @@ st.subheader('Was the tutorial helpful?')
 excel_file = 'Survey_Results.xlsx'
 sheet_name = 'DATA'
 
+# Load excel file from column B to D, skip first 3 rows
 df = pd.read_excel(excel_file,
                    sheet_name=sheet_name,
                    usecols='B:D',
