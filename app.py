@@ -34,3 +34,22 @@ age_selection = st.slider('Age:',
 department_selection = st.multiselect('Department:',
                                     department,
                                     default=department)
+
+# --- FILTER DATAFRAME BASED ON SELECTION
+mask = (df['Age'].between(*age_selection)) & (df['Department'].isin(department_selection))
+number_of_result = df[mask].shape[0]
+st.markdown(f'*Available Results: {number_of_result}*')
+
+# --- GROUP DATAFRAME AFTER SELECTION
+df_grouped = df[mask].groupby(by=['Rating']).count()[['Age']]
+df_grouped = df_grouped.rename(columns={'Age': 'Votes'})
+df_grouped = df_grouped.reset_index()
+
+# --- PLOT BAR CHART
+bar_chart = px.bar(df_grouped,
+                   x='Rating',
+                   y='Votes',
+                   text='Votes',
+                   color_discrete_sequence = ['#F63366']*len(df_grouped),
+                   template= 'plotly_white')
+st.plotly_chart(bar_chart)
